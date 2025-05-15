@@ -2,12 +2,13 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { FiGrid, FiUsers, FiSettings } from "react-icons/fi";
+import { FiGrid} from "react-icons/fi";
+import { FaList, FaUsers } from "react-icons/fa6";
 
 const navItems = [
   { label: "Dashboard", href: "/", icon: <FiGrid /> },
-  { label: "Products", href: "/products", icon: <FiUsers /> },
-  { label: "Customers", href: "/customers", icon: <FiSettings /> },
+  { label: "Products", href: "/products", icon: <FaList /> },
+  { label: "Customers", href: "/customers", icon: <FaUsers /> },
 ];
 
 const Sidebar = () => {
