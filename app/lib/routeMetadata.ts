@@ -1,5 +1,5 @@
 export const routeMetadata: Record<string, { title: string; description: string }> = {
-  "/dashboard": {
+  "/": {
     title: "Dashboard",
     description: "Overview of sales performance",
   },
