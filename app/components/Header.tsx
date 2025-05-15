@@ -4,6 +4,7 @@ import { FiBell, FiUser } from "react-icons/fi";
 
 const Header = () => {
   return (
+    
     <header className="sticky top-0 z-50 flex items-center justify-between px-4 py-2 bg-white shadow ">
       <div className="flex items-center space-x-2">
         <Link href={"/"}>

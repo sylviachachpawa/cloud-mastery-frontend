@@ -46,7 +46,7 @@ export default function RootLayout({
         <Header />
         <div className="flex h-[calc(100vh-64px)]">
           <Sidebar />
-          <main className="flex-1 p-6 overflow-auto">{children}</main>
+          <main className="flex-1 p-6 overflow-auto bg-gray-100 h-screen">{children}</main>
         </div>
       </body>
     </html>

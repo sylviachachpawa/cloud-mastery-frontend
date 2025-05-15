@@ -1,8 +1,14 @@
+import TitleBar from "./components/common/TitleBar";
+
 export default function Home() {
   return (
     <>
-    {/* Title Bar */}
-    <h1 className="text-3xl text-white font-bold underline">Dashboard</h1>
-    </>
+      <TitleBar
+        title="Dashboard"
+        buttonLabel="Export Reports"
+        buttonLink="/api/reports/export"
+        showDateRange={true}
+      />
+     </>
   );
 }

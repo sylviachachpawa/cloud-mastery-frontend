@@ -15,9 +15,12 @@ const Sidebar = () => {
 
   return (
     <aside className="sticky top-0 w-64 h-screen border-r bg-white p-4">
-      <nav className="flex flex-col space-y-6 ">
+      <nav className="flex flex-col space-y-6">
         {navItems.map((item) => {
-          const isActive = pathname.startsWith(item.href);
+          const isActive =
+            item.href === "/"
+              ? pathname === "/"
+              : pathname === item.href || pathname.startsWith(item.href + "/");
 
           return (
             <Link
