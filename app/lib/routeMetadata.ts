@@ -11,4 +11,8 @@ export const routeMetadata: Record<string, { title: string; description: string 
     title: "Customers",
     description: "Your customer base",
   },
+  "/sales": {
+    title: "Sales",
+    description: "Your customer sales",
+  },
 };

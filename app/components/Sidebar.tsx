@@ -4,11 +4,13 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { FiGrid} from "react-icons/fi";
 import { FaList, FaUsers } from "react-icons/fa6";
+import { FaCartArrowDown } from "react-icons/fa";
 
 const navItems = [
   { label: "Dashboard", href: "/", icon: <FiGrid /> },
   { label: "Products", href: "/products", icon: <FaList /> },
   { label: "Customers", href: "/customers", icon: <FaUsers /> },
+  { label: "Sales", href: "/sales", icon: <FaCartArrowDown /> },
 ];
 
 const Sidebar = () => {

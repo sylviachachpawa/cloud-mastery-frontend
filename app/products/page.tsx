@@ -28,7 +28,6 @@ export default function ProductList() {
   }
   const limit = demoProducts.length;
 
-  //  const products: ProductType[] = demoProducts || [];
   const totalRows: number = products.length || 0;
 
   const columns: Column<ProductType>[] = [
@@ -37,20 +36,51 @@ export default function ProductList() {
       label: "Product",
     },
     {
-      key: "inventory",
+      key: "quantity",
       label: "Inventory",
     },
     {
-      key: "item_cost",
+      key: "unit_price",
       label: "Item Cost",
     },
     {
-      key: "price",
-      label: "Price",
+      key: "category",
+      label: "Category",
     },
     {
       key: "status",
       label: "Status",
+      render: (product) => {
+        // 'render' is a common prop for custom cell rendering
+        let statusClass = "";
+        let statusText = "";
+
+        switch (product.status) {
+          case "in_stock":
+            statusClass = "bg-green-100 text-green-500"; 
+            statusText = "In Stock";
+            break;
+          case "low_stock":
+            statusClass = "bg-red-100 text-red-500"; 
+            statusText = "Low Stock";
+            break;
+          case "out_of_stock":
+            statusClass = "bg-yellow-100 text-yellow-500"; 
+            statusText = "Out of Stock";
+            break;
+          default:
+            statusClass = "bg-gray-100 text-gray-500"; 
+            statusText = product.status ?? "Unknown Status";
+        }
+
+        return (
+          <span
+            className={`px-2 py-1 rounded-full text-xs font-semibold ${statusClass}`}
+          >
+            {statusText}
+          </span>
+        );
+      },
     },
   ];
   const handleProductClick = (product: ProductType) => {
@@ -62,7 +92,7 @@ export default function ProductList() {
   return (
     <>
       <Table
-        data={products} 
+        data={products}
         columns={columns}
         onRowClick={handleProductClick}
         pagination={{
@@ -83,6 +113,6 @@ export default function ProductList() {
           <Loader />
         </div>
       )}
-    </> 
+    </>
   );
 }

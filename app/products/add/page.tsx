@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import Image from "next/image";
 import { FolderOpenIcon, TrashIcon } from "@heroicons/react/24/solid";
@@ -8,15 +8,13 @@ import NavigationTitleBar from "@/app/components/common/NavigationTitleBar";
 
 export default function AddProduct() {
   const [form, setForm] = useState({
-    product_name: "",
+    name: "",
     description: "",
-    price: "",
+    unit_price: "",
     category: "",
     cost: "",
     profit: "",
     quantity: "",
-    weight: "",
-    weightUnit: "kg",
     supplier_name: "Flatlay Carpets",
   });
 
@@ -47,24 +45,6 @@ export default function AddProduct() {
     setImages(newImages);
     setPreviews(newPreviews);
   };
-
-  // Auto-calculate profit
-  useEffect(() => {
-    const price = parseFloat(form.price);
-    const cost = parseFloat(form.cost);
-
-    if (!isNaN(price) && !isNaN(cost)) {
-      setForm((prev) => ({
-        ...prev,
-        profit: (price - cost).toFixed(2),
-      }));
-    } else {
-      setForm((prev) => ({
-        ...prev,
-        profit: "",
-      }));
-    }
-  }, [form.price, form.cost]);
 
   // Handle input change
   const handleChange = (
@@ -108,9 +88,9 @@ export default function AddProduct() {
             <div className="space-y-4 mb-4">
               <input
                 type="text"
-                name="product_name"
+                name="name"
                 placeholder="Item name"
-                value={form.product_name}
+                value={form.name}
                 onChange={handleChange}
                 className="w-full p-3 border border-gray-300 rounded-md bg-gray-100 text-gray-800"
               />
@@ -184,9 +164,9 @@ export default function AddProduct() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <input
                 type="number"
-                name="price"
+                name="unit_price"
                 placeholder="Item price"
-                value={form.price}
+                value={form.unit_price}
                 onChange={handleChange}
                 className="p-3 border border-gray-300 rounded-md bg-gray-100 text-gray-800"
               />
@@ -196,61 +176,23 @@ export default function AddProduct() {
                 onChange={handleChange}
                 placeholder="Category"
                 className="p-3 border border-gray-300 rounded-md bg-gray-100 text-gray-800"
-              > 
-              </input>
-              <input
-                type="number"
-                name="cost"
-                placeholder="Cost per item"
-                value={form.cost}
-                onChange={handleChange}
-                className="p-3 border border-gray-300 rounded-md bg-gray-100 text-gray-800"
-              />
-              <input
-                type="text"
-                name="profit"
-                placeholder="Profit (auto-calc.)"
-                value={form.profit}
-                disabled
-                className="p-3 border border-gray-300 rounded-md bg-gray-100 text-gray-800"
-              />
+              ></input>
             </div>
           </div>
           {/* INVENTORY */}
           <div>
-            <h2 className="text-sm font-bold text-gray-900 uppercase mb-3">
+            <h2 className="text-sm font-bold text-gray-900 uppercase mb-3 ">
               Inventory
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
               <input
                 type="number"
                 name="quantity"
                 placeholder="Quantity"
                 value={form.quantity}
                 onChange={handleChange}
-                className="p-3 border border-gray-300 rounded-md bg-gray-100 text-gray-800"
+                className="p-3 border border-gray-300 rounded-md bg-gray-100 text-gray-800 w-full"
               />
-              <div className="flex gap-2">
-                <input
-                  type="number"
-                  name="weight"
-                  placeholder="Weight"
-                  value={form.weight}
-                  onChange={handleChange}
-                  className="w-full p-3 border border-gray-300 rounded-md bg-gray-100 text-gray-800"
-                />
-                <select
-                  name="weightUnit"
-                  value={form.weightUnit}
-                  onChange={handleChange}
-                  className="p-3 border border-gray-300 rounded-md bg-gray-100 text-gray-800"
-                >
-                  <option value="kg">kg</option>
-                  <option value="g">g</option>
-                  <option value="lbs">lbs</option>
-                </select>
-              </div>
-              
             </div>
           </div>
           {/* BUTTON */}

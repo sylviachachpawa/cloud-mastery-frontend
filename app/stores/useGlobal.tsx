@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { ProductType } from "../types/ProductType";
 import { CustomersType } from "../types/CustomersType";
+import { SalesType } from "../types/SalesType";
  
 
 type Store = {
@@ -21,7 +22,7 @@ export const useGlobalStore = create<Store>((set) => ({
 type Customer = {
   customers: CustomersType[];
   loading: boolean;
-  setCustomers: (products: CustomersType[]) => void;
+  setCustomers: (customers: CustomersType[]) => void;
   setLoading: (loading: boolean) => void;
 };
 
@@ -29,5 +30,19 @@ export const useGlobalCustomer = create<Customer>((set) => ({
   customers: [],
   loading: true,
   setCustomers: (customers) => set({ customers }),
+  setLoading: (loading) => set({ loading }),
+}));
+
+type Order = {
+  orders: SalesType[];
+  loading: boolean;
+  setOrders: (orders: SalesType[]) => void;
+  setLoading: (loading: boolean) => void;
+};
+
+export const useGlobalSale = create<Order>((set) => ({
+  orders: [],
+  loading: true,
+  setOrders: (orders) => set({ orders }),
   setLoading: (loading) => set({ loading }),
 }));
