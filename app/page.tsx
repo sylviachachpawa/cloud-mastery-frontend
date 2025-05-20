@@ -2,14 +2,14 @@
 
 import React from "react";
 import TitleBar from "./components/common/TitleBar";
-import TotalSalesAreaChart from "./components/TotalSalesAreaChart";
-import TotalRevenueAreaChart from "./components/TotalRevenueAreaChart";
-import TotalProfitAreaChart from "./components/TotalProfitAreaChart";
-import RecentSales from "./components/RecentSales";
-import Button from "./components/ui/Button";
-import { FiExternalLink } from "react-icons/fi";
-import RecentProducts from "./components/RecentProducts";
-import RecentCustomers from "./components/RecentCustomers";
+// import TotalSalesAreaChart from "./components/TotalSalesAreaChart";
+// import TotalRevenueAreaChart from "./components/TotalRevenueAreaChart";
+// import TotalProfitAreaChart from "./components/TotalProfitAreaChart";
+// import RecentSales from "./components/RecentSales";
+// import Button from "./components/ui/Button";
+// import { FiExternalLink } from "react-icons/fi";
+// import RecentProducts from "./components/RecentProducts";
+// import RecentCustomers from "./components/RecentCustomers";
 
 export default function Home() {
   return (
@@ -22,51 +22,7 @@ export default function Home() {
           showDateRange={true}
         />
 
-        <div className="flex flex-col lg:flex-row gap-4">
-          <div className="card p-4 w-full">
-            <h2 className="mb-2 font-semibold text-gray-600">Total Sales</h2>
-            <TotalSalesAreaChart />
-          </div>
-
-          <div className="card p-4 w-full">
-            <h2 className="mb-2 font-semibold text-gray-700">Total Revenue</h2>
-            <TotalRevenueAreaChart />
-          </div>
-        </div>
-        <div className="flex flex-col lg:flex-row gap-4">
-          <div className="card p-4 w-full">
-            <h2 className="mb-2 font-semibold text-gray-700">Total Profit</h2>
-            <TotalProfitAreaChart />
-          </div>
-
-          <div className="card p-4 w-full">
-            <div className="flex items-center justify-between ">
-              <h2 className=" font-semibold text-gray-700">Recent Sales</h2>
-              <Button label="See all" icon={<FiExternalLink />} />
-            </div>
-            <RecentSales />
-          </div>
-        </div>
-
-        <div className="flex flex-col lg:flex-row gap-4">
-          <div className="card p-4 w-full">
-            <div className="flex justify-between items-center px-2">
-              <h2 className="mb-2 font-semibold text-gray-700">
-                Recent Products
-              </h2>
-              <Button label="See all" icon={<FiExternalLink />} />
-            </div>{" "}
-            <RecentProducts />
-          </div>
-
-          <div className="card p-4 w-full">
-            <div className="flex items-center justify-between ">
-              <h2 className=" font-semibold text-gray-700">Recent Customers</h2>
-              <Button label="See all" icon={<FiExternalLink />} />
-            </div>
-            <RecentCustomers />
-          </div>
-        </div>
+        
       </div>
     </>
   );
