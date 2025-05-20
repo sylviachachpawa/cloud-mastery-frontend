@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useGlobalStore } from "../stores/useGlobalProduct";
+import { useGlobalStore } from "../stores/useGlobal";
 import Image from "next/image";
 import { demoProducts } from "../lib/products";
 import { RecentItemsSkeleton } from "./common/RecentItemsSkeleton";

@@ -1,16 +1,16 @@
 "use client";
 
 import React from "react";
-import { FiDownload } from "react-icons/fi";
 import Link from "next/link";
 import { DateRangePicker } from "rsuite";
 import "rsuite/DateRangePicker/styles/index.css";
 import Button from "../ui/Button";
 
 type Props = {
-  title: string;
+  title?: string;
   buttonLabel?: string;
   buttonLink?: string;
+  buttonIcon?: React.ReactNode;
   showDateRange?: boolean;
 };
 
@@ -18,20 +18,26 @@ export default function TitleBar({
   title,
   buttonLink = "#",
   showDateRange = false,
+  buttonLabel = "",
+  buttonIcon,
 }: Props) {
   return (
-    <div className="w-full mb-6">
-      {/* Top row: Title */}
-      <div className="text-xl font-semibold text-gray-900 mb-4">{title}</div>
-
-      {/* Bottom row: Date + Button */}
-      <div className="flex flex-col lg:flex-row  items-start md:items-center justify-between gap-4">
-        {showDateRange && <DateRangePicker placeholder="Select date range" />}
-        {buttonLink && (
-          <Link href={buttonLink} passHref>
-            <Button label="Export report" icon={<FiDownload />} />
-          </Link>
+    <div className="w-full">
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+        {/* Left: Title */}
+        {title && (
+          <div className="text-xl font-semibold text-gray-900">{title}</div>
         )}
+
+        {/* Right: Date + Button */}
+        <div className="flex flex-col lg:flex-row items-start md:items-center gap-4">
+          {showDateRange && <DateRangePicker placeholder="Select date range" />}
+          {buttonLink && (
+            <Link href={buttonLink} passHref>
+              <Button label={buttonLabel} icon={buttonIcon} />
+            </Link>
+          )}
+        </div>
       </div>
     </div>
   );
