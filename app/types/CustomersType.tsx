@@ -1,11 +1,10 @@
 export interface CustomersType {
-  id: number;
+  id: string;
   firstName: string;
   lastName: string;
   email: string;
   phone: string;
-  country: string;
-  address: string;
+   address: string;
   city: string;
   createdAt: string;
 }

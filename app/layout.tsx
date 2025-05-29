@@ -7,6 +7,7 @@ import "./globals.css";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import { routeMetadata } from "./lib/routeMetadata";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -47,6 +48,7 @@ export default function RootLayout({
         <div className="flex h-[calc(100vh-64px)]">
           <Sidebar />
           <main className="flex-1 p-6 overflow-auto bg-gray-100 h-screen">{children}</main>
+          <Toaster />
         </div>
       </body>
     </html>
