@@ -1,8 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useGlobalCustomer } from "../stores/useGlobal";
-import { demoCustomers } from "../lib/customers";
-import Table, { Column } from "../components/common/Table";
+ import Table, { Column } from "../components/common/Table";
 import { Loader } from "rsuite";
 import { useRouter } from "next/navigation";
 import { PlusCircleIcon } from "@heroicons/react/24/solid";
@@ -28,7 +27,7 @@ export default function ProductList() {
   if (loading) {
     return <div className="text-center py-8">Loading customers...</div>;
   }
-  const limit = demoCustomers.length;
+  const limit = customers.length;
 
   const totalRows: number = customers.length || 0;
 
