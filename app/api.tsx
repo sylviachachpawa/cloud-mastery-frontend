@@ -31,3 +31,13 @@ export const addCustomer = async (customer: CustomersType) => {
         return null;
     }
 };
+
+export const getOrders = async () => {
+    try {
+        const res = await axios.get(`${API_URL}/orders`);
+        return res.data;
+    } catch (error) {
+        console.error("Error fetching orders:", error);
+        return [];
+    }
+};

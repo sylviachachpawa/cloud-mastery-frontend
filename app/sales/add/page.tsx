@@ -4,26 +4,27 @@ import { useState, useMemo } from "react";
 import axios from "axios";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import NavigationTitleBar from "@/app/components/common/NavigationTitleBar";
-import { demoProducts } from "@/app/lib/products";
-import { demoCustomers } from "@/app/lib/customers";
-import { FaPlusSquare } from "react-icons/fa";
+ import { FaPlusSquare } from "react-icons/fa";
+import { useGlobalCustomer, useGlobalStore } from "@/app/stores/useGlobal";
 
 interface SaleItem {
-  productId: number | "";  
+  productId: number | "";
   quantity: number;
-  unitPrice: number;  
+  unitPrice: number;
   itemTotal: number;
 }
 
 export default function AddSales() {
-  const [selectedCustomerId, setSelectedCustomerId] = useState<number | "">("");
+  const [selectedCustomerId, setSelectedCustomerId] = useState<string | "">("");
   const [paymentMethod, setPaymentMethod] = useState<string>("");
   const [saleDate, setSaleDate] = useState<string>("");
   const [discountPercentage, setDiscountPercentage] = useState<number>(0);
+  const { customers } = useGlobalCustomer();
+  const { products } = useGlobalStore();
 
   const [items, setItems] = useState<SaleItem[]>([
-    { productId: "", quantity: 1, unitPrice: 0, itemTotal: 0 },  
-  ]); 
+    { productId: "", quantity: 1, unitPrice: 0, itemTotal: 0 },
+  ]);
   const handleAddItem = () => {
     setItems((prevItems) => [
       ...prevItems,
@@ -47,9 +48,9 @@ export default function AddSales() {
       const item = newItems[index];
 
       if (field === "productId") {
-        const product = demoProducts.find((p) => p.id === Number(value));
+        const product = products.find((p) => p.id === Number(value));
         if (product) {
-          const priceValue = parseFloat(product.unit_price.replace("KES ", ""));
+          const priceValue = parseFloat(product.unitCost.replace("KES ", ""));
           item.productId = Number(value);
           item.unitPrice = priceValue;
         } else {
@@ -57,7 +58,7 @@ export default function AddSales() {
           item.unitPrice = 0;
         }
       } else if (field === "quantity") {
-        item.quantity = Math.max(1, Number(value));  
+        item.quantity = Math.max(1, Number(value));
       }
 
       item.itemTotal = item.quantity * item.unitPrice;
@@ -66,18 +67,15 @@ export default function AddSales() {
     });
   };
 
-  // Calculate Subtotal
   const subtotal = useMemo(() => {
     return items.reduce((sum, item) => sum + item.itemTotal, 0);
   }, [items]);
 
-  // Calculate Grand Total
   const grandTotal = useMemo(() => {
     const discountAmount = subtotal * (discountPercentage / 100);
     return subtotal - discountAmount;
   }, [subtotal, discountPercentage]);
 
-  // Submit form data
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -95,13 +93,13 @@ export default function AddSales() {
       return;
     }
 
-     const saleItemsForSubmission = items.map((item) => {
-      const product = demoProducts.find((p) => p.id === item.productId);
+    const saleItemsForSubmission = items.map((item) => {
+      const product = products.find((p) => p.id === item.productId);
       return {
         productId: item.productId,
         quantity: item.quantity,
-        unitPrice: item.unitPrice, 
-        productName: product?.name,  
+        unitPrice: item.unitPrice,
+        productName: product?.name,
       };
     });
 
@@ -111,12 +109,12 @@ export default function AddSales() {
       date: saleDate,
       items: saleItemsForSubmission,
       discount_percentage: discountPercentage,
-      subtotal_amount: subtotal.toFixed(2), 
-      grand_total_amount: grandTotal.toFixed(2), 
+      subtotal_amount: subtotal.toFixed(2),
+      grand_total_amount: grandTotal.toFixed(2),
     };
 
     try {
-      const res = await axios.post("/api/addSale", saleData); 
+      const res = await axios.post("/api/addSale", saleData);
       console.log("Sale added:", res.data);
       alert("Sale added successfully!");
       // Optionally reset form
@@ -132,15 +130,15 @@ export default function AddSales() {
   };
 
   return (
-    <div className="">
-      <form onSubmit={handleSubmit} className="max-w-3xl mx-auto p-6 space-y-4">
-        <div className=" flex items-center gap-4">
+    <div className="mx-auto p-6 space-y-4">
+      <form onSubmit={handleSubmit} className="">
+        <div className=" flex items-center gap-4 mb-4">
           <NavigationTitleBar title="" showBack={true} />
           <h2 className="text-xl font-semibold text-gray-700">
             Record new sale
           </h2>
         </div>
-        <div className="bg-white rounded-xl shadow max-w-3xl mx-auto p-6 space-y-8">
+        <div className="bg-white rounded-xl shadow  mx-auto p-6 space-y-8">
           {/* CUSTOMER DETAILS */}
           <div className="border-b border-gray-200 pb-6">
             {" "}
@@ -153,13 +151,13 @@ export default function AddSales() {
               <select
                 name="customer_id"
                 value={selectedCustomerId}
-                onChange={(e) => setSelectedCustomerId(Number(e.target.value))}
+                onChange={(e) => setSelectedCustomerId(String(e.target.value))}
                 className="w-full p-3 border border-gray-300 rounded-md bg-gray-100 text-gray-800"
               >
                 <option value="">Select Customer Name</option>
-                {demoCustomers.map((customer) => (
+                {customers.map((customer) => (
                   <option key={customer.id} value={customer.id}>
-                    {`${customer.first_name} ${customer.last_name}`}
+                    {`${customer.firstName} ${customer.lastName}`}
                   </option>
                 ))}
               </select>
@@ -173,8 +171,8 @@ export default function AddSales() {
               >
                 <option value="">Select payment method</option>
                 <option value="Mpesa">Mpesa</option>
-                <option value="Bank Transfer">Bank Transfer</option>
-                <option value="Mobile Money">Mobile Money</option>
+                <option value="Bank_Transfer">Bank Transfer</option>
+                <option value="Mobile_Money">Mobile Money</option>
                 <option value="Cash">Cash</option>
                 <option value="Credit Card">Credit Card</option>
               </select>
@@ -221,7 +219,7 @@ export default function AddSales() {
                     className="w-full p-2 border border-gray-300 rounded-md bg-gray-100 text-gray-800"
                   >
                     <option value="">Select Item Name</option>
-                    {demoProducts.map((product) => (
+                    {products.map((product) => (
                       <option key={product.id} value={product.id}>
                         {product.name}
                       </option>

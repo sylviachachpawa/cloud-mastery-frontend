@@ -2,15 +2,11 @@
 import { useEffect } from "react";
 import { useGlobalStore } from "../stores/useGlobal";
  import { ProductType } from "../types/ProductType";
-import Table, { Column } from "../components/common/Table";
-// import { Loader } from "rsuite";
-// import { useRouter } from "next/navigation";
+import Table, { Column } from "../components/common/Table"; 
 import { getProducts } from "../api";
  
 export default function ProductList() {
-  const { products, loading, setProducts, setLoading } = useGlobalStore();
-  // const [rowLoading, setRowLoading] = useState<string | undefined>(undefined);
-  // const router = useRouter();
+  const { products, loading, setProducts, setLoading } = useGlobalStore(); 
 
   useEffect(() => {
     const load = async () => {
@@ -40,36 +36,25 @@ export default function ProductList() {
     {
       key: "unitCost",
       label: "Item Cost",
+      render: (product) => `KES ${product.unitCost}`,
     },
     {
       key: "category",
       label: "Category",
     },
     
-  ];
-  // const handleProductClick = (product: ProductType) => {
-  //   setRowLoading(product.id.toString());
-  //   setTimeout(() => {
-  //     router.push(`/customers/${product.id}`);
-  //   }, 300);
-  // };
+  ]; 
   return (
     <>
       <Table
         data={products}
         columns={columns}
-        // onRowClick={handleProductClick} 
-        tableTitle="Products"
+         tableTitle="Products"
         currentPage={1}
         totalItems={totalRows}
         loading={loading} 
         showHeader={true}
-      />
-      {/* {rowLoading && (
-        <div className="fixed top-0 left-0 w-full h-full bg-black-50 flex items-center justify-center z-50">
-          <Loader />
-        </div>
-      )} */}
+      /> 
     </>
   );
 }
