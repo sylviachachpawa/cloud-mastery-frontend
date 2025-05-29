@@ -10,3 +10,13 @@ export const getProducts = async () => {
         return [];
     }
 };
+
+export const getCustomers = async () => {
+    try {
+        const res = await axios.get(`${API_URL}/customers`);
+        return res.data;
+    } catch (error) {
+        console.error("Error fetching customers:", error);
+        return [];
+    }
+};

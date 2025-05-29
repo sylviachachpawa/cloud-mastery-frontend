@@ -7,6 +7,8 @@ import { Loader } from "rsuite";
 import { useRouter } from "next/navigation";
 import { PlusCircleIcon } from "@heroicons/react/24/solid";
 import { CustomersType } from "../types/CustomersType";
+import { getCustomers } from "../api";
+import { formatRelativeDate } from "../util";
 
 export default function ProductList() {
   const { customers, loading, setCustomers, setLoading } = useGlobalCustomer();
@@ -16,8 +18,8 @@ export default function ProductList() {
   useEffect(() => {
     const load = async () => {
       setLoading(true);
-      await new Promise((res) => setTimeout(res, 1500));
-      setCustomers(demoCustomers);
+      const customers = await getCustomers();
+      setCustomers(customers.data);
       setLoading(false);
     };
     load();
@@ -28,15 +30,15 @@ export default function ProductList() {
   }
   const limit = demoCustomers.length;
 
-   const totalRows: number = customers.length || 0;
+  const totalRows: number = customers.length || 0;
 
   const columns: Column<CustomersType>[] = [
     {
-      key: "first_name",
+      key: "firstName",
       label: "Firstname",
     },
     {
-      key: "last_name",
+      key: "lastName",
       label: "Lastname",
     },
     {
@@ -44,16 +46,17 @@ export default function ProductList() {
       label: "Email",
     },
     {
-      key: "registration_date",
+      key: "createdAt",
       label: "Date joined",
+      render: (row) => formatRelativeDate(row.createdAt)
+    },
+    {
+      key: "address",
+      label: "Address",
     },
     {
       key: "city",
       label: "City",
-    },
-    {
-      key: "country",
-      label: "Country",
     },
   ];
   const handleCustomerClick = (customer: CustomersType) => {
