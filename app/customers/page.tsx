@@ -1,9 +1,7 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useGlobalCustomer } from "../stores/useGlobal";
- import Table, { Column } from "../components/common/Table";
-import { Loader } from "rsuite";
-import { useRouter } from "next/navigation";
+import Table, { Column } from "../components/common/Table";
 import { PlusCircleIcon } from "@heroicons/react/24/solid";
 import { CustomersType } from "../types/CustomersType";
 import { getCustomers } from "../api";
@@ -11,8 +9,6 @@ import { formatRelativeDate } from "../util";
 
 export default function ProductList() {
   const { customers, loading, setCustomers, setLoading } = useGlobalCustomer();
-  const [rowLoading, setRowLoading] = useState<string | undefined>(undefined);
-  const router = useRouter();
 
   useEffect(() => {
     const load = async () => {
@@ -47,7 +43,7 @@ export default function ProductList() {
     {
       key: "createdAt",
       label: "Date joined",
-      render: (row) => formatRelativeDate(row.createdAt)
+      render: (row) => formatRelativeDate(row.createdAt),
     },
     {
       key: "address",
@@ -58,18 +54,12 @@ export default function ProductList() {
       label: "City",
     },
   ];
-  const handleCustomerClick = (customer: CustomersType) => {
-    setRowLoading(customer.id.toString());
-    setTimeout(() => {
-      router.push(`/customers/${customer.id}`);
-    }, 300);
-  };
+
   return (
     <>
       <Table
         data={customers}
         columns={columns}
-        onRowClick={handleCustomerClick}
         pagination={{
           itemsPerPage: limit,
         }}
@@ -83,11 +73,6 @@ export default function ProductList() {
         buttonIcon={<PlusCircleIcon className="w-5 h-5" />}
         showHeader={true}
       />
-      {rowLoading && (
-        <div className="fixed top-0 left-0 w-full h-full bg-black-50 flex items-center justify-center z-50">
-          <Loader />
-        </div>
-      )}
     </>
   );
 }
