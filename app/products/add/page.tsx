@@ -204,7 +204,7 @@ export default function AddProduct() {
               Add Product
             </button>
           </div>
-        </div>
+        </div>  
       </form>
     </div>
   );
