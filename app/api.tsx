@@ -1,7 +1,6 @@
 import axios from "axios";
 import { CustomersType } from "./types/CustomersType";
-export const API_URL =
-  "https://cloud-mastery-backend-151675025616.us-central1.run.app/api/v1";
+export const API_URL =  process.env.NEXT_PUBLIC_API_URL
 
 export const getProducts = async () => {
   try {
