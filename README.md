@@ -1,36 +1,151 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌩️ Cloud Mastery – Pawa IT Training App
 
-## Getting Started
+Welcome to the **Cloud Mastery Training App**, a hands-on project designed exclusively for the **Pawa IT Cloud Mastery 2025 Event**.
 
-First, run the development server:
+> 🎯 This app is built using [Next.js](https://nextjs.org), and is designed to help you explore **Google Cloud Platform (GCP)**, and API-driven application development — guided by real-world cloud experts from **Pawa IT Solutions** and **Google Cloud Africa**.
+
+---
+
+## 📍 Event Details
+
+**📅 Date:** June 26, 2025  
+**📍 Location:** The Social House, Nairobi  
+**🎓 Theme:** _"Ready to Master the Cloud?"_
+
+This full-day, in-person event will guide you through:
+- App migration to GCP ☁️  
+- DevOps pipelines & CI/CD 🔁  
+- Data analytics using Looker Studio 📊  
+- AI/ML workflows 🤖  
+- Conversational agents with Dialogflow CX 💬  
+
+Meet your trainers from **Pawa IT Solutions** and **Google Cloud Africa**, including:
+- Oscar Limoke
+- Eddie Ngugi
+- Basil Ndonga
+- John Higi
+- Nelson Ameyo
+- Josiah Mugambi
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/Pawa-IT-Solutions/cloud-mastery-frontend.git
+cd cloud-mastery-frontend
+```
+
+### 2. Install Dependencies
+
+```bash
+npm install
+# or
+yarn install
+```
+
+### 3. Create Environment File
+
+Create a `.env.local` file in the project root:
+
+```env
+NEXT_PUBLIC_APP_NAME="CLOUD MASTERY TRAINING"
+NEXT_PUBLIC_API_URL="https://your-assigned-api-url/api/v1"
+```
+
+> 🔐 Each participant will be assigned a unique API endpoint. Make sure to replace the placeholder above!
+
+---
+
+## 🧪 Development Server
+
+Start the dev server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit [http://localhost:3000](http://localhost:3000) to see your app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Edit `app/page.tsx` or other components to start building — changes are hot-reloaded automatically.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🧱 Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+| Feature      | Tool / Framework                    |
+|--------------|-------------------------------------|
+| Frontend     | [Next.js](https://nextjs.org) (App Router) |
+| Styling      | Tailwind CSS                        |
+| Fonts        | [Geist](https://vercel.com/font) via `next/font` |
+| HTTP Client  | Axios                               |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🐳 Docker Support
 
-## Deploy on Vercel
+### Production Dockerfile
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```Dockerfile
+"Check the docker file in the root directory"
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Build & Run
+
+```bash
+docker build -t cloud-mastery-app .
+docker run -p 3000:3000 --env-file .env.local cloud-mastery-app
+```
+
+---
+
+## 📚 Learn More
+
+### Next.js
+
+- [Official Docs](https://nextjs.org/docs)
+- [Interactive Tutorial](https://nextjs.org/learn)
+ 
+
+### Google Cloud (Topics from the Event)
+
+- [BigQuery](https://cloud.google.com/bigquery)
+- [Dialogflow CX](https://cloud.google.com/dialogflow/cx/docs)
+- [Looker Studio](https://lookerstudio.google.com/)
+- [Cloud Run](https://cloud.google.com/run)
+
+---
+
+## 📦 Deployment (Optional)
+
+Deploy this app instantly with Cloud Run:
+
+[![Deploy with Cloud Run](https://cloud.google.com/run)]
+
+---
+
+## 💬 Need Help?
+
+If you encounter issues:
+
+- Ask a trainer at the event
+- Visit our support desk
+- Email: [events@pawait.co.ke](mailto:events@pawait.co.ke)
+
+---
+
+## 👩‍💻 License & Credits
+
+This training is powered by **Pawa IT Solutions** in partnership with **Google Cloud Africa**.
+
+© 2025 Pawa IT Solutions. All rights reserved.  
+Website: [pawait.africa](https://pawait.africa)  
+Privacy: [Privacy Policy](https://pawait.africa/privacy)
+
+---
+
+### 🌟 Ready to Master the Cloud?
+
+_Yes you are. Let’s build something awesome together._ 🚀
