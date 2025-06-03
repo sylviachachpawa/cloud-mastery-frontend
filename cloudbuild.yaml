@@ -1,0 +1,83 @@
+steps:
+ # Create .env file
+  # - name: "bash"
+  #   args:
+  #     - "-c"
+  #     - |
+  #       cat << EOF > .env
+  #       NEXT_PUBLIC_APP_NAME=${_NEXT_PUBLIC_APP_NAME}
+  #       NEXT_PUBLIC_API_URL=${_NEXT_PUBLIC_API_URL}
+  #       EOF
+
+  # Create Artifact Registry repository if it doesn't exist
+  - id: "setup-repository"
+    name: "gcr.io/cloud-builders/gcloud"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        gcloud artifacts repositories describe frontend \
+          --location=${_REGION} \
+          --project=${PROJECT_ID} &>/dev/null || \
+        gcloud artifacts repositories create frontend \
+          --repository-format=docker \
+          --location=${_REGION} \
+          --project=${PROJECT_ID}
+
+  # Configure Docker authentication for Artifact Registry
+  - id: "configure-docker"
+    name: "gcr.io/cloud-builders/gcloud"
+    args: ["auth", "configure-docker", "${_REGION}-docker.pkg.dev"]
+
+  # Build the container image
+  - id: "build-image"
+    name: "gcr.io/cloud-builders/docker"
+    args: 
+      - "build"
+      - "-t"
+      - "${_REGION}-docker.pkg.dev/${PROJECT_ID}/frontend/${REPO_NAME}:${COMMIT_SHA}"
+      - "-t"
+      - "${_REGION}-docker.pkg.dev/${PROJECT_ID}/frontend/${REPO_NAME}:latest"
+      - "."
+
+  # Push the container image to Artifact Registry
+  - id: "push-image"
+    name: "gcr.io/cloud-builders/docker"
+    args: 
+      - "push"
+      - "--all-tags"
+      - "${_REGION}-docker.pkg.dev/${PROJECT_ID}/frontend/${REPO_NAME}"
+
+  # Deploy container image to Cloud Run
+  - id: "deploy-service"
+    name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: "gcloud"
+    args:
+      - "run"
+      - "deploy"
+      - "${REPO_NAME}"
+      - "--image"
+      - "${_REGION}-docker.pkg.dev/${PROJECT_ID}/frontend/${REPO_NAME}:${COMMIT_SHA}"
+      - "--region"
+      - "${_REGION}"
+      - "--platform"
+      - "managed"
+      - "--allow-unauthenticated"
+      - "--port"
+      - "3000"
+      - "--min-instances"
+      - "0"
+      - "--max-instances"
+      - "1"
+      - "--memory"
+      - "256Mi"
+      - "--concurrency"
+      - "500"
+      - "--set-env-vars"
+      - "${_NEXT_PUBLIC_APP_NAME},NEXT_PUBLIC_API_URL=${_NEXT_PUBLIC_API_URL}"
+
+substitutions:
+  _REGION: "us-central1"
+
+options:
+  logging: CLOUD_LOGGING_ONLY
