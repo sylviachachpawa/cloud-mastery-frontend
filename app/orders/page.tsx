@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useGlobalSale } from "../stores/useGlobal";
 import Table, { Column } from "../components/common/Table";
 import { PlusCircleIcon } from "@heroicons/react/24/solid";
-import { OrderType } from "../types/SalesType";
+import { OrderType } from "../types/OrderType";
 import { getOrders } from "../api";
 import { formatRelativeDate, formatUnderscoreToSpace, renderStatusBadge } from "../util";
 
