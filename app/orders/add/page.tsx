@@ -37,13 +37,10 @@ export default function AddOrders() {
     ]);
   };
 
-  console.log(items);
-  // Function to remove an item row
   const handleRemoveItem = (index: number) => {
     setItems((prevItems) => prevItems.filter((_, i) => i !== index));
   };
 
-  // Handle changes for individual item rows
   const handleItemChange = (
     index: number,
     field: keyof OrderItem,
@@ -95,9 +92,7 @@ export default function AddOrders() {
       items.length === 0 ||
       items.some((item) => !item.productId || item.quantity <= 0)
     ) {
-      alert(
-        "Please fill all customer details and add at least one valid item with quantity."
-      );
+      toast.error("⚠️ Please fill all customer details and add at least one valid item with quantity.");
       return;
     }
 
@@ -170,7 +165,7 @@ export default function AddOrders() {
               >
                 <option value="">Select payment method</option>
                 <option value="MPESA">Mpesa</option>
-                <option value="VISA">VISA CARD</option>
+                <option value="VISA">VISA Card</option>
                 <option value="MASTERCARD">Master Card</option>
                 <option value="PAYPAL">Paypal</option>
                 <option value="CASH">Cash</option>
@@ -328,7 +323,7 @@ export default function AddOrders() {
             {/* Added padding top */}
             <button
               type="submit"
-              className="cursor-pointer bg-sky-200 hover:bg-sky-300 text-sky-800 font-medium py-2 px-6 rounded-full transition-transform"
+              className="flex items-center space-x-2 bg-sky-200 hover:border hover:bg-sky-200  hover:border-sky-300 text-sky-900 font-medium py-2 px-3 rounded-md transition cursor-pointer"
             >
               Add Order
             </button>

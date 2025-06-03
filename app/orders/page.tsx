@@ -27,6 +27,7 @@ export default function Sales() {
     {
       key: "id",
       label: "Order ID",
+      // render: (row: OrderType) => row.id.slice(0, 8)
     },
     {
       key: "customerName",

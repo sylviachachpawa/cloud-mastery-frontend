@@ -221,8 +221,7 @@ export default function Table<T>({
           <div className="flex justify-between items-center mt-4 p-2 text-lg">
             <span className="text-gray-700 ">
               <span className="text-gray-700">
-                {/* Ensure we don't display 0 if totalItems is 0 */}
-                Showing {(currentPage! - 1) * pagination.itemsPerPage + 1}–
+                 Showing {(currentPage! - 1) * pagination.itemsPerPage + 1}–
                 {Math.min(currentPage! * pagination.itemsPerPage, totalItems)}{" "}
                 of {totalItems} items
               </span>{" "}

@@ -6,6 +6,7 @@ import { addCustomer } from "@/app/api";
 import { CustomersType } from "@/app/types/CustomersType";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 const CustomerForm: React.FC = () => {
   const [form, setForm] = useState<CustomersType>({
@@ -38,17 +39,24 @@ const CustomerForm: React.FC = () => {
     setError(null);
 
     try {
-      const response = await addCustomer(form);
+      await addCustomer(form);
       toast.success("Customer added successfully!");
       router.push("/customers");
-      console.log(response);
-    } catch (error) {
+    } catch (error: unknown) {
       console.error("Error adding customer:", error);
-      toast.error(
-        error instanceof Error ? error.message : "An unexpected error occurred"
-      );
-    } finally {
-      setIsLoading(false);
+      if (axios.isAxiosError(error)) {
+        const messages = error.response?.data?.message;
+
+        if (Array.isArray(messages)) {
+          messages.forEach((msg: string) => toast.error(msg));
+        } else {
+          toast.error(error.message || "An unexpected error occurred");
+        }
+      } else if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("An unexpected error occurred");
+      }
     }
   };
 
@@ -134,7 +142,7 @@ const CustomerForm: React.FC = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="flex items-center space-x-2 bg-sky-200 hover:border hover:bg-sky-200  hover:border-sky-300 text-sky-900 font-medium py-2 px-3 rounded-md transition cursor-pointer"
           >
             {isLoading ? "Adding..." : "Add Customer"}
           </button>
