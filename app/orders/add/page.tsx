@@ -84,8 +84,7 @@ export default function AddOrders() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Basic validation
-    if (
+     if (
       !selectedCustomerId ||
       !paymentMethod ||
       !orderDate ||
