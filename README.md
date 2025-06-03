@@ -1,6 +1,6 @@
-# 🌩️ Cloudinary Mastery – Pawa IT Training App
+# 🌩️ Cloud Mastery – Pawa IT Training App
 
-Welcome to the **Cloud Mastery Training App**, a hands-on project designed exclusively for the **Pawa IT Cloudinary Mastery 2025 Event**.
+Welcome to the **Cloud Mastery Training App**, a hands-on project designed exclusively for the **Pawa IT Cloud Mastery 2025 Event**.
 
 > 🎯 This app is built using [Next.js](https://nextjs.org), and is designed to help you explore **Google Cloud Platform (GCP)**, and API-driven application development — guided by real-world cloud experts from **Pawa IT Solutions** and **Google Cloud Africa**.
 
