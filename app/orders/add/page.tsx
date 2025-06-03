@@ -1,14 +1,16 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import axios from "axios";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import NavigationTitleBar from "@/app/components/common/NavigationTitleBar";
- import { FaPlusSquare } from "react-icons/fa";
+import { FaPlusSquare } from "react-icons/fa";
 import { useGlobalCustomer, useGlobalStore } from "@/app/stores/useGlobal";
+import { addOrder } from "@/app/api";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 interface OrderItem {
-  productId: number | "";
+  productId: string;
   quantity: number;
   unitPrice: number;
   itemTotal: number;
@@ -17,14 +19,17 @@ interface OrderItem {
 export default function AddOrders() {
   const [selectedCustomerId, setSelectedCustomerId] = useState<string | "">("");
   const [paymentMethod, setPaymentMethod] = useState<string>("");
-  const [orderDate, setOrderDate] = useState<string>("");
+  const [orderDate, setOrderDate] = useState<string>(
+    new Date().toISOString().split("T")[0]
+  );
   const [discountPercentage, setDiscountPercentage] = useState<number>(0);
   const { customers } = useGlobalCustomer();
   const { products } = useGlobalStore();
-
+  const router = useRouter();
   const [items, setItems] = useState<OrderItem[]>([
     { productId: "", quantity: 1, unitPrice: 0, itemTotal: 0 },
   ]);
+
   const handleAddItem = () => {
     setItems((prevItems) => [
       ...prevItems,
@@ -32,6 +37,7 @@ export default function AddOrders() {
     ]);
   };
 
+  console.log(items);
   // Function to remove an item row
   const handleRemoveItem = (index: number) => {
     setItems((prevItems) => prevItems.filter((_, i) => i !== index));
@@ -48,20 +54,22 @@ export default function AddOrders() {
       const item = newItems[index];
 
       if (field === "productId") {
-        const product = products.find((p) => p.id === Number(value));
+        const product = products.find((p) => String(p.id) === value);
+        item.productId = value as string;
+
         if (product) {
-          const priceValue = parseFloat(product.unitCost.replace("KES ", ""));
-          item.productId = Number(value);
-          item.unitPrice = priceValue;
+          const unitPrice = parseFloat(product.unitCost);
+          item.unitPrice = unitPrice;
+          item.itemTotal = unitPrice * item.quantity;
         } else {
-          item.productId = "";
           item.unitPrice = 0;
+          item.itemTotal = 0;
         }
       } else if (field === "quantity") {
-        item.quantity = Math.max(1, Number(value));
+        const qty = Math.max(1, Number(value));
+        item.quantity = qty;
+        item.itemTotal = item.unitPrice * qty;
       }
-
-      item.itemTotal = item.quantity * item.unitPrice;
 
       return newItems;
     });
@@ -94,35 +102,26 @@ export default function AddOrders() {
     }
 
     const orderItemsForSubmission = items.map((item) => {
-      const product = products.find((p) => p.id === item.productId);
       return {
         productId: item.productId,
         quantity: item.quantity,
-        unitPrice: item.unitPrice,
-        productName: product?.name,
+        unitCost: item.unitPrice,
       };
     });
 
     const orderData = {
-      customer_id: selectedCustomerId,
-      payment_method: paymentMethod,
-      date: orderDate,
+      customerId: selectedCustomerId,
+      orderAmount: parseFloat(grandTotal.toFixed(2)),
+      orderDate: new Date(orderDate).toISOString(),
+      paymentMethod: paymentMethod,
+      shippingAddress: "Nairobi, Kenya",
       items: orderItemsForSubmission,
-      discount_percentage: discountPercentage,
-      subtotal_amount: subtotal.toFixed(2),
-      grand_total_amount: grandTotal.toFixed(2),
     };
 
     try {
-      const res = await axios.post("/api/addOrder", orderData);
-      console.log("Order added:", res.data);
-      alert("Order added successfully!");
-      // Optionally reset form
-      setSelectedCustomerId("");
-      setPaymentMethod("");
-      setOrderDate("");
-      setDiscountPercentage(0);
-      setItems([{ productId: "", quantity: 1, unitPrice: 0, itemTotal: 0 }]);
+      await addOrder(orderData);
+      toast.success("Order added successfully.");
+      router.push("/orders");
     } catch (error) {
       console.error("Error adding order:", error);
       alert("Something went wrong! Check console for details.");
@@ -170,11 +169,12 @@ export default function AddOrders() {
                 className="w-full p-3 border border-gray-300 rounded-md bg-gray-100 text-gray-800"
               >
                 <option value="">Select payment method</option>
-                <option value="Mpesa">Mpesa</option>
-                <option value="Bank_Transfer">Bank Transfer</option>
-                <option value="Mobile_Money">Mobile Money</option>
-                <option value="Cash">Cash</option>
-                <option value="Credit Card">Credit Card</option>
+                <option value="MPESA">Mpesa</option>
+                <option value="VISA">VISA CARD</option>
+                <option value="MASTERCARD">Master Card</option>
+                <option value="PAYPAL">Paypal</option>
+                <option value="CASH">Cash</option>
+                <option value="BANK_TRANSFER">Bank Transfer</option>
               </select>
 
               {/* Date of order input */}
@@ -196,7 +196,7 @@ export default function AddOrders() {
               Items
             </h2>
             {/* Table Header for Items */}
-            <div className="grid grid-cols-6 gap-4 font-semibold text-gray-700 mb-2">
+            <div className="grid grid-cols-6 gap-4 font-semibold text-gray-700 mb-2 text-xs">
               <span className="col-span-2 uppercase">Item Name</span>
               <span className="col-span-1 text-center uppercase">QTY</span>
               <span className="col-span-1 text-right uppercase">Price</span>
@@ -276,7 +276,7 @@ export default function AddOrders() {
             <button
               type="button"
               onClick={handleAddItem}
-              className="text-green-600 hover:text-green-800 font-semibold text-sm mt-2 items-center"
+              className="text-green-600 hover:text-green-800 font-semibold text-sm mt-2 items-center cursor-pointer"
             >
               Add Item <FaPlusSquare className="inline ml-1" />
             </button>
