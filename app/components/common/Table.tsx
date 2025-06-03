@@ -7,8 +7,8 @@ import {
   ChevronUpDownIcon,
 } from "@heroicons/react/24/solid";
 import clsx from "clsx";
- import Skeleton from "react-loading-skeleton";
 import TitleBar from "./TitleBar";
+import TableSkeleton from "./TableSkeleton";
 
 export interface Column<T> {
   key: keyof T;
@@ -101,7 +101,7 @@ export default function Table<T>({
     },
     [setSortColumn, setSortDirection]
   );
- 
+
   return (
     <div className="space-y-4">
       {showHeader && (
@@ -111,13 +111,13 @@ export default function Table<T>({
             buttonLink={buttonLink}
             buttonLabel={buttonLabel}
             buttonIcon={buttonIcon}
-          /> 
+          />
         </div>
       )}
       {showPagination && (
         <>
           <div className="flex justify-between items-center mt-2 p-2 text-lg">
-             {totalPages > 1 && (
+            {totalPages > 1 && (
               <div className="flex gap-2">
                 <button
                   onClick={() =>
@@ -155,39 +155,7 @@ export default function Table<T>({
       )}
 
       {loading ? (
-        <div className="overflow-x-auto w-full rounded-xl shadow">
-          <table className="min-w-full divide-gray-200 card">
-            <thead className="bg-white border-b">
-              <tr className="text-left text-gray-700">
-                {columns.map((col) => (
-                  <th
-                    key={col.key as string}
-                    className="px-6 py-3 text-left text-xs font-medium border-r border-gray-200 text-gray-500 tracking-wider"
-                  >
-                    <Skeleton width={80} height={12} />
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="text-gray-500 text-sm">
-              {[...Array(10)].map((_, rowIndex) => (
-                <tr
-                  key={rowIndex}
-                  className={rowIndex % 2 === 0 ? "bg-gray-50" : "bg-white"}
-                >
-                  {columns.map((col, colIndex) => (
-                    <td
-                      key={colIndex}
-                      className="px-6 py-4 border-r border-gray-200"
-                    >
-                      <Skeleton height={16} />
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+       <TableSkeleton rows={10} columns={columns.length} />
       ) : errorMessage ? (
         <div className="text-red-500 p-8 text-center card">{errorMessage}</div>
       ) : (

@@ -8,13 +8,11 @@ export default function Home() {
     <>
       <div className="space-y-4">
         <TitleBar
-          title="Dashboard"
+          title="Insights"
           buttonLabel="Export Reports"
           buttonLink="/api/reports/export"
           showDateRange={true}
         />
-
-        
       </div>
     </>
   );

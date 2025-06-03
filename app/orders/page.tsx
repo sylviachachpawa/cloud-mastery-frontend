@@ -2,11 +2,10 @@
 import { useEffect } from "react";
 import { useGlobalSale } from "../stores/useGlobal";
 import Table, { Column } from "../components/common/Table";
-import { Loader } from "rsuite";
 import { PlusCircleIcon } from "@heroicons/react/24/solid";
 import { OrderType } from "../types/SalesType";
 import { getOrders } from "../api";
-import { formatRelativeDate, renderStatusBadge } from "../util";
+import { formatRelativeDate, formatUnderscoreToSpace, renderStatusBadge } from "../util";
 
 export default function Sales() {
   const { orders, loading, setOrders, setLoading } = useGlobalSale();
@@ -20,14 +19,7 @@ export default function Sales() {
     };
     load();
   }, [setOrders, setLoading]);
-
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-48">
-        <Loader size="md" content="Loading sales..." />
-      </div>
-    );
-  }
+ 
 
   const totalRows: number = orders.length || 0;
 
@@ -81,6 +73,7 @@ export default function Sales() {
     {
       key: "paymentMethod",
       label: "Payment Method",
+      render: (row) => formatUnderscoreToSpace(row.paymentMethod),
     },
   ];
 
@@ -93,8 +86,8 @@ export default function Sales() {
         currentPage={1}
         totalItems={totalRows}
         loading={loading}
-        buttonLink="/sales/add"
-        buttonLabel="New Sale"
+        buttonLink="/orders/add"
+        buttonLabel="New Order"
         buttonIcon={<PlusCircleIcon className="w-5 h-5" />}
         showHeader={true}
       />

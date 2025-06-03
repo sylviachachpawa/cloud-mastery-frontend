@@ -74,3 +74,7 @@ export function renderStatusBadge(status: string) {
     </span>
   );
 }
+
+export function formatUnderscoreToSpace(str: string) {
+  return str.replace(/_/g, ' ');
+}

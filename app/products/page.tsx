@@ -1,12 +1,12 @@
 "use client";
 import { useEffect } from "react";
 import { useGlobalStore } from "../stores/useGlobal";
- import { ProductType } from "../types/ProductType";
-import Table, { Column } from "../components/common/Table"; 
+import { ProductType } from "../types/ProductType";
+import Table, { Column } from "../components/common/Table";
 import { getProducts } from "../api";
- 
+
 export default function ProductList() {
-  const { products, loading, setProducts, setLoading } = useGlobalStore(); 
+  const { products, loading, setProducts, setLoading } = useGlobalStore();
 
   useEffect(() => {
     const load = async () => {
@@ -18,10 +18,6 @@ export default function ProductList() {
     load();
   }, [setProducts, setLoading]);
 
-  if (loading) {
-    return <div className="text-center py-8">Loading products...</div>;
-  }
- 
   const totalRows: number = products.length || 0;
 
   const columns: Column<ProductType>[] = [
@@ -42,19 +38,18 @@ export default function ProductList() {
       key: "category",
       label: "Category",
     },
-    
-  ]; 
+  ];
   return (
     <>
       <Table
         data={products}
         columns={columns}
-         tableTitle="Products"
+        tableTitle="Products"
         currentPage={1}
         totalItems={totalRows}
-        loading={loading} 
+        loading={loading}
         showHeader={true}
-      /> 
+      />
     </>
   );
 }

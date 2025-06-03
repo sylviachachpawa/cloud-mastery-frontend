@@ -7,22 +7,22 @@ import NavigationTitleBar from "@/app/components/common/NavigationTitleBar";
  import { FaPlusSquare } from "react-icons/fa";
 import { useGlobalCustomer, useGlobalStore } from "@/app/stores/useGlobal";
 
-interface SaleItem {
+interface OrderItem {
   productId: number | "";
   quantity: number;
   unitPrice: number;
   itemTotal: number;
 }
 
-export default function AddSales() {
+export default function AddOrders() {
   const [selectedCustomerId, setSelectedCustomerId] = useState<string | "">("");
   const [paymentMethod, setPaymentMethod] = useState<string>("");
-  const [saleDate, setSaleDate] = useState<string>("");
+  const [orderDate, setOrderDate] = useState<string>("");
   const [discountPercentage, setDiscountPercentage] = useState<number>(0);
   const { customers } = useGlobalCustomer();
   const { products } = useGlobalStore();
 
-  const [items, setItems] = useState<SaleItem[]>([
+  const [items, setItems] = useState<OrderItem[]>([
     { productId: "", quantity: 1, unitPrice: 0, itemTotal: 0 },
   ]);
   const handleAddItem = () => {
@@ -40,7 +40,7 @@ export default function AddSales() {
   // Handle changes for individual item rows
   const handleItemChange = (
     index: number,
-    field: keyof SaleItem,
+    field: keyof OrderItem,
     value: string | number
   ) => {
     setItems((prevItems) => {
@@ -83,7 +83,7 @@ export default function AddSales() {
     if (
       !selectedCustomerId ||
       !paymentMethod ||
-      !saleDate ||
+      !orderDate ||
       items.length === 0 ||
       items.some((item) => !item.productId || item.quantity <= 0)
     ) {
@@ -93,7 +93,7 @@ export default function AddSales() {
       return;
     }
 
-    const saleItemsForSubmission = items.map((item) => {
+    const orderItemsForSubmission = items.map((item) => {
       const product = products.find((p) => p.id === item.productId);
       return {
         productId: item.productId,
@@ -103,28 +103,28 @@ export default function AddSales() {
       };
     });
 
-    const saleData = {
+    const orderData = {
       customer_id: selectedCustomerId,
       payment_method: paymentMethod,
-      date: saleDate,
-      items: saleItemsForSubmission,
+      date: orderDate,
+      items: orderItemsForSubmission,
       discount_percentage: discountPercentage,
       subtotal_amount: subtotal.toFixed(2),
       grand_total_amount: grandTotal.toFixed(2),
     };
 
     try {
-      const res = await axios.post("/api/addSale", saleData);
-      console.log("Sale added:", res.data);
-      alert("Sale added successfully!");
+      const res = await axios.post("/api/addOrder", orderData);
+      console.log("Order added:", res.data);
+      alert("Order added successfully!");
       // Optionally reset form
       setSelectedCustomerId("");
       setPaymentMethod("");
-      setSaleDate("");
+      setOrderDate("");
       setDiscountPercentage(0);
       setItems([{ productId: "", quantity: 1, unitPrice: 0, itemTotal: 0 }]);
     } catch (error) {
-      console.error("Error adding sale:", error);
+      console.error("Error adding order:", error);
       alert("Something went wrong! Check console for details.");
     }
   };
@@ -135,7 +135,7 @@ export default function AddSales() {
         <div className=" flex items-center gap-4 mb-4">
           <NavigationTitleBar title="" showBack={true} />
           <h2 className="text-xl font-semibold text-gray-700">
-            Record new sale
+            Record new order
           </h2>
         </div>
         <div className="bg-white rounded-xl shadow  mx-auto p-6 space-y-8">
@@ -177,12 +177,12 @@ export default function AddSales() {
                 <option value="Credit Card">Credit Card</option>
               </select>
 
-              {/* Date of Sale input */}
+              {/* Date of order input */}
               <input
                 type="date"
-                name="sale_date"
-                value={saleDate}
-                onChange={(e) => setSaleDate(e.target.value)}
+                name="order_date"
+                value={orderDate}
+                onChange={(e) => setOrderDate(e.target.value)}
                 className="w-full p-3 border border-gray-300 rounded-md bg-gray-100 text-gray-800"
               />
             </div>
@@ -322,7 +322,7 @@ export default function AddSales() {
             </div>
           </div>
 
-          {/* Record Sale Button */}
+          {/* Record Order Button */}
           <div className="flex justify-end pt-6">
             {" "}
             {/* Added padding top */}
@@ -330,7 +330,7 @@ export default function AddSales() {
               type="submit"
               className="cursor-pointer bg-sky-200 hover:bg-sky-300 text-sky-800 font-medium py-2 px-6 rounded-full transition-transform"
             >
-              Record Sale
+              Add Order
             </button>
           </div>
         </div>

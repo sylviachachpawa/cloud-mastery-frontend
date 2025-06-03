@@ -1,7 +1,7 @@
 export const routeMetadata: Record<string, { title: string; description: string }> = {
   "/": {
     title: "Dashboard",
-    description: "Overview of sales performance",
+    description: "Overview of orders performance",
   },
   "/products": {
     title: "Products",
@@ -11,8 +11,8 @@ export const routeMetadata: Record<string, { title: string; description: string 
     title: "Customers",
     description: "Your customer base",
   },
-  "/sales": {
-    title: "Sales",
-    description: "Your customer sales",
+  "/orders": {
+    title: "Orders",
+    description: "Your customer orders",
   },
 };

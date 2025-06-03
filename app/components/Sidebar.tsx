@@ -7,10 +7,10 @@ import { FaList, FaUsers } from "react-icons/fa6";
 import { FaCartArrowDown } from "react-icons/fa";
 
 const navItems = [
-  { label: "Dashboard", href: "/", icon: <FiGrid /> },
+  { label: "Insights", href: "/", icon: <FiGrid /> },
   { label: "Products", href: "/products", icon: <FaList /> },
   { label: "Customers", href: "/customers", icon: <FaUsers /> },
-  { label: "Sales", href: "/sales", icon: <FaCartArrowDown /> },
+  { label: "Orders", href: "/orders", icon: <FaCartArrowDown /> },
 ];
 
 const Sidebar = () => {

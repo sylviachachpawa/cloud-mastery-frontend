@@ -20,9 +20,6 @@ export default function ProductList() {
     load();
   }, [setCustomers, setLoading]);
 
-  if (loading) {
-    return <div className="text-center py-8">Loading customers...</div>;
-  }
   const limit = customers.length;
 
   const totalRows: number = customers.length || 0;
