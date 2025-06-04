@@ -26,28 +26,23 @@ FROM base AS builder
 ARG NEXT_PUBLIC_APP_NAME=""
 ARG NEXT_PUBLIC_API_URL=""
 
-# Set environment variables from build args (fallback for Docker Compose)
-ENV NEXT_PUBLIC_APP_NAME=$NEXT_PUBLIC_APP_NAME
-ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
-
 COPY --from=deps /app/node_modules ./node_modules
-
-# Copy necessary files for build caching
 COPY . .
 
-# Load environment variables from .env file if it exists (Cloud Build)
-# This will override the ARG-based env vars if .env is present
-RUN if [ -f .env ]; then export $(cat .env | xargs); fi
-
-ENV NEXT_TELEMETRY_DISABLED 1
+# Set environment variables and build
+RUN if [ -f .env ]; then \
+      set -a && . ./.env && set +a; \
+    else \
+      export NEXT_PUBLIC_APP_NAME="${NEXT_PUBLIC_APP_NAME}"; \
+      export NEXT_PUBLIC_API_URL="${NEXT_PUBLIC_API_URL}"; \
+    fi && \
+    npm run build --legacy-peer-deps
 
 # Build with output tracing for better optimization
-RUN npm run build --legacy-peer-deps
+# RUN npm run build --legacy-peer-deps (moved to the builder stage)
 
 # Production image, copy all the files and run next
 FROM base AS runner
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs
