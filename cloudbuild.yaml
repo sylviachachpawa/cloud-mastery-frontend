@@ -1,4 +1,13 @@
 steps:
+  # Generate .env file from pipeline substitutions
+  - name: "bash"
+    args:
+      - "-c"
+      - |
+        cat << EOF > .env
+        NEXT_PUBLIC_APP_NAME=${_NEXT_PUBLIC_APP_NAME}
+        NEXT_PUBLIC_API_URL=${_NEXT_PUBLIC_API_URL}
+        EOF
 
   # Create Artifact Registry repository if it doesn't exist
   - id: "setup-repository"
@@ -64,8 +73,10 @@ steps:
       - "256Mi"
       - "--concurrency"
       - "500"
-      - "--set-env-vars"
-      - "NEXT_PUBLIC_APP_NAME=${_NEXT_PUBLIC_APP_NAME},NEXT_PUBLIC_API_URL=${_NEXT_PUBLIC_API_URL}"
+      - "--timeout"
+      - "300"
+      - "--cpu"
+      - "1"
 
 substitutions:
   _REGION: "us-central1"

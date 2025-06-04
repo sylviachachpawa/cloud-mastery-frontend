@@ -21,10 +21,23 @@ RUN \
 
 # Rebuild the source code only when needed
 FROM base AS builder
+
+# Accept build arguments with default values for flexibility (Docker Compose)
+ARG NEXT_PUBLIC_APP_NAME=""
+ARG NEXT_PUBLIC_API_URL=""
+
+# Set environment variables from build args (fallback for Docker Compose)
+ENV NEXT_PUBLIC_APP_NAME=$NEXT_PUBLIC_APP_NAME
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+
 COPY --from=deps /app/node_modules ./node_modules
 
 # Copy necessary files for build caching
 COPY . .
+
+# Load environment variables from .env file if it exists (Cloud Build)
+# This will override the ARG-based env vars if .env is present
+RUN if [ -f .env ]; then export $(cat .env | xargs); fi
 
 ENV NEXT_TELEMETRY_DISABLED 1
 
