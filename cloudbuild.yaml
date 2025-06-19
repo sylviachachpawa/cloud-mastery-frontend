@@ -8,7 +8,6 @@ steps:
         NEXT_PUBLIC_APP_NAME=${_NEXT_PUBLIC_APP_NAME}
         NEXT_PUBLIC_API_URL=${_NEXT_PUBLIC_API_URL}
         EOF
-
   # Create Artifact Registry repository if it doesn't exist
   - id: "setup-repository"
     name: "gcr.io/cloud-builders/gcloud"
