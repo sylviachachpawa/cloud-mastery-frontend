@@ -13,6 +13,7 @@ Welcome to the **Cloud Mastery Training App**, a hands-on project designed exclu
 **🎓 Theme:** _"Ready to Master the Cloud?"_
 
 This full-day, in-person event will guide you through:
+- Housekeeping
 - App migration to GCP ☁️  
 - DevOps pipelines & CI/CD 🔁  
 - Data analytics using Looker Studio 📊  
